@@ -1,0 +1,1 @@
+This application queries through the U.S National Park Service API and returns campground information based on the national park selected.
