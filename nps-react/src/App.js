@@ -11,6 +11,10 @@ import './App.css';
 
 import nationalParks from './parks.json';
 
+/**
+ * Main function that renders the application
+ * @constructor
+ */
 function App() {
   // States
   const [parks] = useState(nationalParks); // Lists of park names and codes
@@ -34,6 +38,10 @@ function App() {
     { headerName: 'Dump Station', field: 'dumpStation', resizable: true, filter: true, width: 120 },
   ];
 
+  /**
+   * Calls NPS API and sets campGroundData and gridData
+   * @param {*} event - Event fired from html select change
+   */
   function getParkCampgroundInfo(event) {
     const url = 'https://api.nps.gov/api/v1/campgrounds?api_key=SI2Gfleu6ulfSaZ9zgacK4IFgZLfd0ZYz7OguQIM&parkCode=' + event.target.value;
 
@@ -69,11 +77,18 @@ function App() {
       .catch(error => console.error(error));
   }
 
+  /**
+   * Sets gridApi variable and allows access to grid functions. Resizes grid columns.
+   * @param {*} params 
+   */
   function onGridReady(params) {
     setGridApi(params.api);
     params.api.sizeColumnsToFit();
   }
 
+  /**
+   * Gets the selected row from the grid, formats it, and sets selectedCampground
+   */
   function updateDetails() {
     const selectedRows = gridApi.getSelectedRows();
 

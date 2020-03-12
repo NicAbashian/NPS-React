@@ -2,6 +2,10 @@ import React from 'react';
 import Detail from '../Detail/Detail.js';
 import './CampGroundDetails.css'
 
+/**
+ * Main function that renders a list of Detail components
+ * @constructor
+ */
 function CampGroundDetails(props) {
   // States
   const campground = props.campground;

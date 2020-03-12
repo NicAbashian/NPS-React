@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 
 import './Detail.css';
 
+/**
+ * Main function that renders a Detail
+ * @constructor
+ */
 function Detail(props) {
   // States
   const [icon] = useState(props.icon);
