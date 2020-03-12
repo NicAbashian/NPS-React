@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-import './Details.css';
+import './Detail.css';
 
-function Details(props) {
+function Detail(props) {
   // States
   const [icon] = useState(props.icon);
   const [field] = useState(props.field);
@@ -16,4 +16,4 @@ function Details(props) {
   );
 }
 
-export default Details;
+export default Detail;

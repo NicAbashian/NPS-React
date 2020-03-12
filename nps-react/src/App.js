@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import Details from './Details.js';
+import CampGroundDetails from './components/CampGroundDetails/CampGroundDetails.js';
 
 // AG Grid
 import { AgGridReact } from 'ag-grid-react';
@@ -42,30 +42,25 @@ function App() {
 
     fetch(url)
       .then(res => res.json())
-      .then(response => {
-
+      .then(({ data: campgrounds }) => {
         const tmpRowData = [];
-        setCampGroundData(response.data);
+        setCampGroundData(campgrounds);
 
-        for (let i=0; i < response.data.length; i++) {
-          let numOfShowers = 0;
-          if (response.data[i].amenities.showers[0] !== 'None') {
-            numOfShowers = response.data[i].amenities.showers.length;
-          }
-          
+        campgrounds.forEach((campground) => {
           tmpRowData.push({
-            "id": response.data[i].id,
-            "name": response.data[i].name,
-            "sites": response.data[i].campsites.totalsites,
-            "showers": numOfShowers,
-            "laundry": response.data[i].amenities.laundry === '' ? 'No': response.data[i].amenities.laundry,
-            "rv": response.data[i].accessibility.rvallowed,
-            "dumpStation": response.data[i].amenities.dumpstation === '' ? 'None': response.data[i].amenities.dumpstation
+            "id": campground.id,
+            "name": campground.name,
+            "sites": campground.campsites.totalsites,
+            "showers": campground.amenities.showers[0] !== 'None' ? campground.amenities.showers.length : 0,
+            "laundry": campground.amenities.laundry === '' ? 'No': campground.amenities.laundry,
+            "rv": campground.accessibility.rvallowed ? 'Yes' : 'No',
+            "dumpStation": campground.amenities.dumpstation === '' ? 'None': campground.amenities.dumpstation
           });
-        }
+        });
+
         setGridData(tmpRowData);
         gridApi.hideOverlay();
-        if (response.data.length === 0) {
+        if (campgrounds.length === 0) {
           gridApi.showNoRowsOverlay();
         }
         setSelectedCampground();
@@ -90,12 +85,8 @@ function App() {
           const tmpCGData = campGroundData[i];
           
           // Build contact string
-          if (tmpCGData.contacts) {
-            let contactString = 'No contact information provided';
-            if(tmpCGData.contacts.emailAddresses.length > 0) {
-              contactString = 'Email: ' + tmpCGData.contacts.emailAddresses[0].emailAddress;
-              tmpCGData.contacts = contactString;
-            }
+          if (tmpCGData.contacts && tmpCGData.contacts.emailAddress && tmpCGData.contacts.emailAddresses.length > 0) {
+            tmpCGData.contacts = `Email: ${tmpCGData.contacts.emailAddresses[0].emailAddress}`;
           } else {
             tmpCGData.contacts = 'No contact information provided.';
           }
@@ -104,18 +95,21 @@ function App() {
           if (tmpCGData.operatingHours) {
             let hourString = '';
             for (let j = 0; j < tmpCGData.operatingHours.length; j++) {
-              hourString += tmpCGData.operatingHours[j].description;
+              hourString += tmpCGData.operatingHours[j].description + ' ';
             }
             tmpCGData.operatingHours = hourString;
-          } else {
-            tmpCGData.operatingHours = 'No operating hours data provided.';
           }
 
           // Build fees string
-          if (tmpCGData.fees) {
+          if (tmpCGData.fees && tmpCGData.fees.length > 0) {
             let feeString = '';
             for (let j = 0; j < tmpCGData.fees.length; j++) {
-              feeString += tmpCGData.fees[j].title + ': $' + tmpCGData.fees[j].cost.slice(0, -2) + '. ';
+              if (tmpCGData.fees[j].title) {
+                feeString += tmpCGData.fees[j].title
+              }
+              if (tmpCGData.fees[j].cost) {
+                feeString += ': $' +tmpCGData.fees[j].cost.slice(0, -2) + '. ';
+              }
             }
             tmpCGData.fees = feeString;
           } else {
@@ -123,6 +117,7 @@ function App() {
           }
 
           setSelectedCampground(tmpCGData);
+          i = campGroundData.length; // Selected campground found, stop looping
         }
       }
     }
@@ -151,24 +146,7 @@ function App() {
         </AgGridReact>
       </div>
       <h2>Campground Details</h2>
-      <div className="detailContainer">
-        {
-          selectedCampground ? [
-            <Details key="0" icon={'notes'} field={'Description'} fieldValue={selectedCampground.description}/>,
-            <Details key="1" icon={'cloud'} field={'Weather'} fieldValue={selectedCampground.weatheroverview}/>,
-            <Details key="2" icon={'schedule'} field={'Hours'} fieldValue={selectedCampground.operatingHours}/>,
-            <Details key="3" icon={'attach_money'} field={'Fees'} fieldValue={selectedCampground.fees}/>,
-            <Details key="4" icon={'change_history'} field={'# of Tent Sites'} fieldValue={selectedCampground.campsites.tentonly}/>,
-            <Details key="5" icon={'group'} field={'# of Group Sites'} fieldValue={selectedCampground.campsites.group}/>,
-            <Details key="6" icon={'airport_shuttle'} field={'# of RV Sites'} fieldValue={selectedCampground.campsites.rvonly}/>,
-            <Details key="7" icon={'security'} field={'Regulations'} fieldValue={selectedCampground.regulationsoverview}/>,
-            <Details key="8" icon={'directions_car'} field={'Directions'} fieldValue={selectedCampground.directionsoverview}/>,
-            <Details key="9" icon={'email'} field={'Contacts'} fieldValue={selectedCampground.contacts}/>
-          ] :
-          <p>No Campground Selected</p>
-        }
-      </div>
-      
+      <CampGroundDetails campground={selectedCampground} />
       <button id="bookButton">
         <a href={selectedCampground ? selectedCampground.reservationsurl: ''}>Book A Site</a>
       </button>

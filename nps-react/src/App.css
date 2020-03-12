@@ -8,12 +8,6 @@
   color: white;
 }
 
-.detailContainer {
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-}
-
 .gridContainer {
   height: 400px;
   width: 100%;

@@ -1,3 +1,15 @@
+# NPS React
+
+## Requirements
+ - npm 5.0.3, git
+
+## Usage
+* `git clone https://github.com/NicAbashian/NPS-React.git
+* cd nps-react
+* npm install
+* npm start
+
+## About
 This application queries through the U.S National Park Service API and returns campground information based on the national park selected.
 
 A user can select a park from a list of national parks in a dropdown. The application will then request campground information from the U.S National Park Service API and display that information in a grid. The user may then sort and filter the campgrounds in the grid.
