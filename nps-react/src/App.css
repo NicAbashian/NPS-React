@@ -4,12 +4,54 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  padding: 0px 20px;
   color: white;
 }
 
+.detailContainer {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.gridContainer {
+  height: 400px;
+  width: 100%;
+}
+
 .parkSelect {
-  font-size: 18px;
+  font-size: 16px;
   margin-bottom: 20px;
+}
+
+#listOfParks {
+  border: 2px solid #fff;
+  background-color: #262c2e;
+  color: #fff;
+  cursor: pointer;
+}
+
+#bookButton {
+  color: #fff;
+  background-color: #137c13;
+  border: none;
+  padding: 1em;
+  align-self: end;
+  margin-bottom: 20px;
+}
+
+#bookButton:hover {
+  background-color: #0e5f0e;
+  cursor: pointer;
+}
+
+#bookButton > a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Overriding the default AG grid dark theme */
+.gridContainer .ag-row-selected {
+  border-color: #137c13;
+  background-color: #137c13;
 }

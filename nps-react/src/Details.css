@@ -1,0 +1,21 @@
+.detailItem {
+  flex: 1 1 100%;
+  margin: 10px;
+  max-width: calc(50% - 20px);
+}
+
+.detailItem .material-icons {
+  vertical-align: middle;
+  margin-right: 8px;
+  padding: 8px;
+  border-radius: 22px;
+  background-color: #355966;
+}
+
+.detailItemField {
+  font-weight: bold;
+}
+
+.detailItemValue {
+  font-weight: lighter;
+}
