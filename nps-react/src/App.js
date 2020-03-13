@@ -18,6 +18,7 @@ import nationalParks from './parks.json';
 function App() {
   // States
   const [parks] = useState(nationalParks); // Lists of park names and codes
+  const [parkCode, setParkCode] = useState('');
   const [disableSelect, setDisableSelect] = useState(false); // boolean to disable park select
   const [campGroundData, setCampGroundData] = useState([]) // Array of campground objects from the NPS API
   const [selectedCampground, setSelectedCampground] = useState() // Object containing selected campground information
@@ -45,6 +46,7 @@ function App() {
   function getParkCampgroundInfo(event) {
     const url = 'https://api.nps.gov/api/v1/campgrounds?api_key=SI2Gfleu6ulfSaZ9zgacK4IFgZLfd0ZYz7OguQIM&parkCode=' + event.target.value;
 
+    setParkCode(event.target.value);
     setDisableSelect(true);
     gridApi.showLoadingOverlay();
 
@@ -165,7 +167,10 @@ function App() {
       <h2>Campground Details</h2>
       <CampGroundDetails campground={selectedCampground} />
       <button id="bookButton">
+        {/* NPS API does not return this yet. Temporary work around below
         <a href={selectedCampground ? selectedCampground.reservationsurl: ''}>Book A Site</a>
+        */}
+        <a href={selectedCampground ? "http://www.nps.gov/"+ parkCode +"/planyourvisit/campgrounds.htm": ''}>Book A Site</a>
       </button>
     </div>
   );
