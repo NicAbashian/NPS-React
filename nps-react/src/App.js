@@ -97,10 +97,10 @@ function App() {
     if (selectedRows.length === 1) {
       for (let i = 0; i < campGroundData.length; i ++) {
         if (campGroundData[i].id === selectedRows[0].id) {
-          const tmpCGData = campGroundData[i];
+          const tmpCGData = JSON.parse(JSON.stringify(campGroundData[i])); // Deep clone of data.
           
           // Build contact string
-          if (tmpCGData.contacts && tmpCGData.contacts.emailAddress && tmpCGData.contacts.emailAddresses.length > 0) {
+          if (tmpCGData.contacts && tmpCGData.contacts.emailAddresses && tmpCGData.contacts.emailAddresses.length > 0) {
             tmpCGData.contacts = `Email: ${tmpCGData.contacts.emailAddresses[0].emailAddress}`;
           } else {
             tmpCGData.contacts = 'No contact information provided.';
@@ -113,6 +113,8 @@ function App() {
               hourString += tmpCGData.operatingHours[j].description + ' ';
             }
             tmpCGData.operatingHours = hourString;
+          } else {
+            tmpCGData.operatingHours = 'No hours information provided.'
           }
 
           // Build fees string
